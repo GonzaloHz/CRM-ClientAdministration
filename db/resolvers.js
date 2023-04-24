@@ -1,12 +1,18 @@
 const User = require('../models/User')
 const bcryptjs = require('bcryptjs')
+var jwt = require('jsonwebtoken');
+
+const createToken = (userInfo, secretWord, expiresIn) => {
+    const { id, name, lastName, email } = userInfo;
+    return jwt.sign({ id, name, lastName, email }, secretWord, { expiresIn });
+} 
 
 const resolvers = {
     Query: {
         getCourses: () => "hi"
     },
     Mutation: {
-        newUser: async (_, {input}, ctx) => {
+        newUser: async (_, {input}) => {
             const { email, password } = input;
 
             //Check if the user was already register
@@ -26,6 +32,21 @@ const resolvers = {
                 console.log(error);
             }
 
+        },
+        authenticateUser: async (_, {input}) => {
+            const { email, password } = input;
+
+            //Check the user
+            const userExists = await User.findOne({email})
+            if(!userExists) throw new Error(`The user isn't exists`)
+            
+            //Check the pw
+            const pwExists = bcryptjs.compare(password, userExists.password); 
+
+            if(!pwExists) throw new Error('The password is incorrect')
+            return {
+                token: createToken(userExists, process.env.SECRET_WORD, '24h')
+            }
         }
     }
 }
