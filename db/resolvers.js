@@ -1,4 +1,5 @@
 const User = require('../models/User')
+const Product = require('../models/Product')
 const bcryptjs = require('bcryptjs')
 var jwt = require('jsonwebtoken');
 
@@ -49,6 +50,17 @@ const resolvers = {
             if(!pwExists) throw new Error('The password is incorrect')
             return {
                 token: createToken(userExists, process.env.SECRET_WORD, '24h')
+            }
+        },
+        newProduct: async (_, {input}) => {
+            const { name, quantity, price } = input;
+            try {
+                if(!name || !quantity || !price) throw new Error(`There aren't all the requirements`)
+                const newProduct = new Product(input);
+                const result = newProduct.save();
+                return result;
+            } catch (error) {
+                console.log(error);
             }
         }
     }
