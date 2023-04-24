@@ -8,9 +8,17 @@ const typeDefs = gql`
         email: String
         created: String
     }
-
+    
     type Token {
         token: String
+    }
+    
+    type Product {
+        id: ID
+        name: String
+        quantity: Int
+        price: Float
+        created: String
     }
 
     input AuthenticateUserInput {
@@ -25,13 +33,23 @@ const typeDefs = gql`
         password: String!
     }
 
+    input ProductInput {
+        name: String!
+        quantity: Int!
+        price: Float!
+    }
+
     type Query {
         getUser(token: String!): User
     }
 
     type Mutation {
+        # Users
         newUser(input: UserInput): User
         authenticateUser(input: AuthenticateUserInput): Token
+        
+        # Product
+        newProduct(input: ProductInput): Product
     }
 `
 
