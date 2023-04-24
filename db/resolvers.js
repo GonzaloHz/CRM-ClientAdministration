@@ -9,7 +9,10 @@ const createToken = (userInfo, secretWord, expiresIn) => {
 
 const resolvers = {
     Query: {
-        getCourses: () => "hi"
+        getUser: async (_, {token}) => {
+            const userId = await jwt.verify(token, process.env.SECRET_WORD)
+            return userId
+        }
     },
     Mutation: {
         newUser: async (_, {input}) => {
