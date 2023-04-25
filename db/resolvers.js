@@ -12,7 +12,15 @@ const resolvers = {
     Query: {
         getUser: async (_, {token}) => {
             const userId = await jwt.verify(token, process.env.SECRET_WORD)
-            return userId
+            return userId;
+        },
+        getProducts: async () => {
+            try {
+                const allTheProds = await Product.find({})
+                return allTheProds; 
+            } catch (error) {
+                console.log(error);
+            }
         }
     },
     Mutation: {
@@ -50,7 +58,7 @@ const resolvers = {
             if(!pwExists) throw new Error('The password is incorrect')
             return {
                 token: createToken(userExists, process.env.SECRET_WORD, '24h')
-            }
+            };
         },
         newProduct: async (_, {input}) => {
             const { name, quantity, price } = input;
