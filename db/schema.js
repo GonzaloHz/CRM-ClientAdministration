@@ -45,6 +45,7 @@ const typeDefs = gql`
     
         # Product
         getProducts: [Product]    
+        getProductById(id: ID!): Product
     }
 
     type Mutation {

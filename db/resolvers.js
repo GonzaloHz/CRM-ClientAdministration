@@ -21,6 +21,16 @@ const resolvers = {
             } catch (error) {
                 console.log(error);
             }
+        },
+        getProductById: async (_, {id}) => {
+            const iD = id;
+            try {
+                const theProdWithId = await Product.findById(iD)
+                if(!theProdWithId) throw new Error('There is not product with that id')
+                return theProdWithId;
+            } catch (error) {
+                console.log(error)
+            }
         }
     },
     Mutation: {
