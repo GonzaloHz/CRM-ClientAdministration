@@ -85,8 +85,17 @@ const resolvers = {
                 let theProdToRenew = await Product.findById(id);
                 if(!theProdToRenew) throw new Error('There is not product with that id')
                 theProdToRenew = await Product.findOneAndUpdate({_id: id}, input, {new: true})
-                console.log(theProdToRenew);
                 return theProdToRenew;
+            } catch (error) {
+                console.log(error);
+            }
+        },
+        deleteProduct: async (_, {id}) => {
+            try {
+                const productToDlt = await Product.findById(id);
+                if(!productToDlt) throw new Error('there is not product with that id')
+                await Product.findByIdAndDelete({_id: id})
+                return "The product has been removed";
             } catch (error) {
                 console.log(error);
             }
