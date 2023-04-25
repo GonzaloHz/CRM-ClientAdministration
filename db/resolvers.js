@@ -23,9 +23,8 @@ const resolvers = {
             }
         },
         getProductById: async (_, {id}) => {
-            const iD = id;
             try {
-                const theProdWithId = await Product.findById(iD)
+                const theProdWithId = await Product.findById(id)
                 if(!theProdWithId) throw new Error('There is not product with that id')
                 return theProdWithId;
             } catch (error) {
@@ -77,6 +76,17 @@ const resolvers = {
                 const newProduct = new Product(input);
                 const result = newProduct.save();
                 return result;
+            } catch (error) {
+                console.log(error);
+            }
+        },
+        actualiceProduct: async (_, {id, input}) => {
+            try {
+                let theProdToRenew = await Product.findById(id);
+                if(!theProdToRenew) throw new Error('There is not product with that id')
+                theProdToRenew = await Product.findOneAndUpdate({_id: id}, input, {new: true})
+                console.log(theProdToRenew);
+                return theProdToRenew;
             } catch (error) {
                 console.log(error);
             }

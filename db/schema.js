@@ -55,6 +55,7 @@ const typeDefs = gql`
         
         # Product
         newProduct(input: ProductInput): Product
+        actualiceProduct(id: ID!, input: ProductInput): Product
     }
 `
 
