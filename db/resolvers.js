@@ -102,9 +102,7 @@ const resolvers = {
             }
         },
         newClient: async (_, {input}, ctx) => {
-            console.log(input)
             const { email } = input;
-            //Validators
             const registeredClient = await Client.findOne({email})
             if(registeredClient) throw new Error('There is an user with that email')
 
