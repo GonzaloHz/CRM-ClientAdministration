@@ -106,8 +106,9 @@ const resolvers = {
             const registeredClient = await Client.findOne({email})
             if(registeredClient) throw new Error('There is an user with that email')
 
+            var newClient = new Client(input)
+            newClient.seller = ctx.user.id;
             try {
-                const newClient = new Client(input)
                 const result = await newClient.save()
                 return result;
             } catch (error) {
