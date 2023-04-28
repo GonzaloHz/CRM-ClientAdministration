@@ -31,6 +31,14 @@ const resolvers = {
             } catch (error) {
                 console.log(error)
             }
+        },
+        getAllTheClients: async () => {
+            try {
+                const clients = await Client.find({})
+                return clients;
+            } catch (error) {
+                console.log(error);
+            }
         }
     },
     Mutation: {
