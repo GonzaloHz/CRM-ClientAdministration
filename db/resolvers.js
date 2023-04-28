@@ -100,6 +100,21 @@ const resolvers = {
             } catch (error) {
                 console.log(error);
             }
+        },
+        newClient: async (_, {input}, ctx) => {
+            console.log(input)
+            const { email } = input;
+            //Validators
+            const registeredClient = await Client.findOne({email})
+            if(registeredClient) throw new Error('There is an user with that email')
+
+            try {
+                const newClient = new Client(input)
+                const result = await newClient.save()
+                return result;
+            } catch (error) {
+                console.log(error);
+            }            
         }
     }
 }
