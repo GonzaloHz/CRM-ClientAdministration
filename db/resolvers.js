@@ -39,6 +39,15 @@ const resolvers = {
             } catch (error) {
                 console.log(error);
             }
+        },
+        getClientWithSeller: async (_, {}, ctx) => {
+            try {
+                const clientsList = await Client.find({seller: ctx.user.id})
+                if(!clientsList) throw new Error('There are not clients wiht that seller id')
+                return clientsList;
+            } catch (error) {
+                console.log(error);
+            }
         }
     },
     Mutation: {
