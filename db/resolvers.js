@@ -48,6 +48,18 @@ const resolvers = {
             } catch (error) {
                 console.log(error);
             }
+        },
+        getClientWithId: async (_, {id}, ctx) => {
+            try {
+                const result = await Client.findById(id)
+
+                if(!result) throw new Error('There is not client with that id')
+                if(result.seller !== ctx.user.id) throw new Error('Your credentials are not valid for this action')
+
+                return result;
+            } catch (error) {
+                console.log(error);
+            }
         }
     },
     Mutation: {
