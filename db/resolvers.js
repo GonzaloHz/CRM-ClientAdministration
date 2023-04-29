@@ -54,7 +54,7 @@ const resolvers = {
                 const result = await Client.findById(id)
 
                 if(!result) throw new Error('There is not client with that id')
-                if(result.seller !== ctx.user.id) throw new Error('Your credentials are not valid for this action')
+                if(result.seller.toString() !== ctx.user.id) throw new Error('Your credentials are not valid for this action')
 
                 return result;
             } catch (error) {
@@ -143,6 +143,17 @@ const resolvers = {
             } catch (error) {
                 console.log(error);
             }            
+        },
+        renewClient: async (_, {input, id}, ctx) => {
+            try {
+                let oldClient = await Client.findById(id)
+                if(!oldClient) throw new Error('There is not client with that id')
+                if(oldClient.seller.toString() !== ctx.user.id) throw new Error('Your credentials are not valid for this action')
+                let result = await Client.findByIdAndUpdate({_id: id}, input, {new: true})
+                return result;
+            } catch (error) {
+                console.log(error);
+            }
         }
     }
 }
