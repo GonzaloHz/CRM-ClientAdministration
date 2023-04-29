@@ -154,6 +154,17 @@ const resolvers = {
             } catch (error) {
                 console.log(error);
             }
+        },
+        deleteClient: async (_, {id}, ctx) => {
+            try {
+                const oldClient = await Client.findById(id)
+                if(!oldClient) throw new Error('There is no client with that id')
+                if(oldClient.seller.toString() !== ctx.user.id) throw new Error('Your credentials are not valid for this action')
+                await Client.findByIdAndDelete(id)
+                return "The client has been deleted";
+            } catch (error) {
+                console.log(error);
+            }
         }
     }
 }
